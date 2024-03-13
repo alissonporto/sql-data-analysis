@@ -1,5 +1,6 @@
 -- Create a new table from the original table. Categorize data in "size_tumor" column.
 -- Binarize data in "class" column. Encode data in "quadrant" and "irradianting" columns.
+-- Encode data in "menopause" column.
 
 
 CREATE TABLE IF NOT EXISTS bcancer.BreastCancer2
@@ -10,7 +11,11 @@ SELECT
         WHEN class = 'recurrence-events' THEN 1
 	END as class,
     age,
-    menopause,
+    CASE 
+		WHEN menopause = 'premeno' THEN 1
+        WHEN menopause = 'lt40' THEN 2
+        WHEN menopause = 'ge40' THEN 3
+	END as menopause,
 	CASE 
 		WHEN size_tumor IN ('0-4', '5-9') THEN 'Very small'
         WHEN size_tumor IN ('10-14', '15-19') THEN 'Small'
